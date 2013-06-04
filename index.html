@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Thonda.github.com by thonda</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Thonda.github.com</h1>
+        <h2></h2>
+        <a href="https://github.com/thonda" class="button"><small>Follow me on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="step1-9php" class="anchor" href="#step1-9php"><span class="octicon octicon-link"></span></a>STEP1 9.PHPからデータベースを操作してみる</h1>
+
+<h3>
+<a name="" class="anchor" href="#"><span class="octicon octicon-link"></span></a>接続</h3>
+
+<p>まずはPHPからデータベースに接続します。昔はmysql_connect関数を使っていましたが、最近はmysqliクラスを利用する方法が一般的です。</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$mysqli</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="s1">'ホスト名'</span><span class="p">,</span> <span class="s1">'ユーザ名'</span><span class="p">,</span> <span class="s1">'パスワード'</span><span class="p">,</span> <span class="s1">'データベース名'</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">connect_error</span><span class="p">){</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">"接続失敗："</span> <span class="o">.</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">connect_error</span><span class="p">);</span>
+  <span class="k">exit</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>ホスト名はPHPを動かすサーバとデータベースを動かすサーバを分けない限りlocalhostです。初期設定ではユーザ名はroot、パスワードは無しになっています。</p>
+
+<h3>
+<a name="-1" class="anchor" href="#-1"><span class="octicon octicon-link"></span></a>実行</h3>
+
+<p>コマンド（クエリ）を実行するにはmysqli::query関数を使用します。</p>
+
+<p>INSERTの例</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">"INSERT INTO datas (name, text) VALUES ('piyo', 'hogepiyo')"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$result</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">"INSERT成功"</span><span class="p">);</span>
+<span class="k">else</span>
+  <span class="k">print</span><span class="p">(</span><span class="s2">"INSERT失敗"</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>このような場合mysqli::query関数は成功したかどうかを返します。</p>
+
+<p>SELECTの例</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">"SELECT * FROM datas ORDER BY date DESC"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$result</span><span class="p">){</span>
+  <span class="k">while</span><span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">fetch_object</span><span class="p">()){</span>
+    <span class="nv">$name</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">);</span>
+    <span class="nv">$text</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">);</span>
+    <span class="nv">$date</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="o">-&gt;</span><span class="na">date</span><span class="p">);</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"</span><span class="si">$name</span><span class="s2"> : </span><span class="si">$text</span><span class="s2"> (</span><span class="si">$date</span><span class="s2">)&lt;br&gt;"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>このような場合mysqli::query関数は結果オブジェクトを返します。fetch_object関数で1行ずつ取り出して表示します。</p>
+
+<p>今回はユーザーの入力を受け取っていないので使用しませんでしたが、ユーザーの入力をSQL文の一部に使用する場合は必ずmysqli::real_escape_string関数でエスケープするようにします。</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">real_escape_string</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]);</span>
+<span class="nv">$text</span> <span class="o">=</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">real_escape_string</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]);</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">"INSERT INTO datas (name, text) VALUES ('</span><span class="si">$name</span><span class="s2">', '</span><span class="si">$text</span><span class="s2">')"</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="-2" class="anchor" href="#-2"><span class="octicon octicon-link"></span></a>切断</h3>
+
+<p>データベースの操作が終わったら接続を切ります。</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">close</span><span class="p">();</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+        </section>
+
+        <aside id="sidebar">
+
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
