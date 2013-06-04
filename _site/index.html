@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>test</title>
+<style>
+.container{
+ width: 800px;
+ margin: 0 auto;
+}
+</style>
+<div class="container">
+    <h3 id="section">接続</h3>
+
+<p>まずはPHPからデータベースに接続します。昔はmysql_connect関数を使っていましたが、最近はmysqliクラスを利用する方法が一般的です。
+<code>php
+&lt;?php
+$mysqli = new mysqli('ホスト名', 'ユーザ名', 'パスワード', 'データベース名');
+if ($mysqli-&gt;connect_error){
+  print("接続失敗：" . $mysqli-&gt;connect_error);
+  exit();
+}
+?&gt;
+</code>
+ホスト名はPHPを動かすサーバとデータベースを動かすサーバを分けない限りlocalhostです。初期設定ではユーザ名はroot、パスワードは無しになっています。</p>
+
+<h3 id="section-1">実行</h3>
+
+<p>コマンド（クエリ）を実行するにはmysqli::query関数を使用します。</p>
+
+<p>INSERTの例
+<code>php
+&lt;?php
+$result = $mysqli-&gt;query("INSERT INTO datas (name, text) VALUES ('piyo', 'hogepiyo')");
+if($result)
+  print("INSERT成功");
+else
+  print("INSERT失敗");
+?&gt;
+</code>
+このような場合mysqli::query関数は成功したかどうかを返します。</p>
+
+<p>SELECTの例
+<code>php
+&lt;?php
+$result = $mysqli-&gt;query("SELECT * FROM datas ORDER BY date DESC");
+if($result){
+  while($row = $result-&gt;fetch_object()){
+    $name = htmlspecialchars($row-&gt;name);
+    $text = htmlspecialchars($row-&gt;text);
+    $date = htmlspecialchars($row-&gt;date);
+    print("$name : $text ($date)&lt;br&gt;");
+  }
+}
+?&gt;
+</code>
+このような場合mysqli::query関数は結果オブジェクトを返します。fetch_object関数で1行ずつ取り出して表示します。</p>
+
+<p>今回はユーザーの入力を受け取っていないので使用しませんでしたが、ユーザーの入力をSQL文の一部に使用する場合は必ずmysqli::real_escape_string関数でエスケープするようにします。
+<code>php
+&lt;?php
+$name = $mysqli-&gt;real_escape_string($_POST["name"]);
+$text = $mysqli-&gt;real_escape_string($_POST["text"]);
+$result = $mysqli-&gt;query("INSERT INTO datas (name, text) VALUES ('$name', '$text')");
+?&gt;
+</code></p>
+
+<h3 id="section-2">切断</h3>
+
+<p>データベースの操作が終わったら接続を切ります。
+<code>php
+&lt;?php
+$mysqli-&gt;close();
+?&gt;
+</code></p>
+
+</div>
