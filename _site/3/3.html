@@ -60,7 +60,7 @@
 
 <p>プログラムが大規模になってくるとコードが複雑化し、プログラムの作成が非常に困難になります。そこで登場したのがオブジェクト指向という概念です。オブジェクト指向プログラミングでは、プログラムは複数のオブジェクトの集まりとして構成します。各オブジェクトはデータを保持するための変数（プロパティ）とデータを処理するための関数（メソッド）を備え、1つの役割を担います。オブジェクトはクラスという設計図をもとに作成します。</p>
 
-<p><a href="STEP1-9.PHP%E3%81%8B%E3%82%89%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E6%93%8D%E4%BD%9C%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B">STEP1 9.PHPからデータベースを操作してみる</a>で使用したmysqliクラスを例に挙げ、オブジェクト指向の考え方を整理しましょう。</p>
+<p><a href="../1/9.html">STEP1-9.PHPからデータベースを操作してみる</a>で使用したmysqliクラスを例に挙げ、オブジェクト指向の考え方を整理しましょう。</p>
 <div class="highlight"><pre><code class="php language-php" data-lang="php"><span class="cp">&lt;?php</span>
 <span class="nv">$mysqli</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="s1">&#39;ホスト名&#39;</span><span class="p">,</span> <span class="s1">&#39;ユーザ名&#39;</span><span class="p">,</span> <span class="s1">&#39;パスワード&#39;</span><span class="p">,</span> <span class="s1">&#39;データベース名&#39;</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$mysqli</span><span class="o">-&gt;</span><span class="na">connect_error</span><span class="p">){</span>
@@ -131,7 +131,7 @@
 </code></pre></div>
 <p>constは定数の宣言です。その後プロパティを4つ宣言していますが、そのうち$mysqliはprivateとなっています。MySQLへの接続情報は外部からアクセスする必要がないためprivateを付けることで外部からアクセスできないようにしています。__constructメソッドはインスタンスの作成時に呼び出される関数（コンストラクタ）です。ここでMySQLの接続情報を受け取り、接続およびセッションの開始を行います。プロパティにアクセスする際は$this-&gt;を付けます。</p>
 
-<p>以下は<a href="STEP2-3.%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E6%A9%9F%E8%83%BD%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%8B">STEP2 3.ログイン機能を作ってみる</a>で作成したregister.php, login.php, logout.phpの3つの上部をAuthクラスを利用して書き換えたものです。</p>
+<p>以下は<a href="../2/3.html">STEP2-3.ログイン機能を作ってみる</a>で作成したregister.php, login.php, logout.phpの3つの上部をAuthクラスを利用して書き換えたものです。</p>
 <div class="highlight"><pre><code class="php language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
 <span class="k">require_once</span><span class="p">(</span><span class="s1">&#39;Auth.php&#39;</span><span class="p">);</span>
